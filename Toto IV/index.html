@@ -1,0 +1,83 @@
+<!DOCTYPE html>  
+<html>	
+<head>	
+<title>	
+Creat html by Bat	 
+</title>	
+</head>	
+<body>	
+para 1:  <br>	
+<a href="http://www.beautifullover.org" target="_blank">	
+beautifullover </a>	
+</br>	
+<a href="https://github.com/littleflute/BlCDs/issues/519" target="_blank">	
+issue519 </a>	
+<div id="curSong" style="border:1px solid green;"></div>	
+<p id="demo" style="border:1px solid red;"></p>		
+<br> <div id='song1'>01 Rosanna.mp3</div>	
+<button id = "1" onclick="play(this)">1:01 Rosanna.mp3</button> 
+<button id = "2" onclick="play(this)">2:02 Make Believe.mp3</button> 
+<button id = "3" onclick="play(this)">3:03 I Won't Hold You Back.mp3</button> 
+<button id = "4" onclick="play(this)">4:04 Good for You.mp3</button> 
+<button id = "5" onclick="play(this)">5:05 It's a Feeling.mp3</button> 
+<button id = "6" onclick="play(this)">6:06 Afraid of Love.mp3</button> 
+<button id = "7" onclick="play(this)">7:07 Lovers in the Night.mp3</button> 
+<button id = "8" onclick="play(this)">8:08 We Made It.mp3</button> 
+<button id = "9" onclick="play(this)">9:09 Waiting for Your Love.mp3</button> 
+<button id = "10" onclick="play(this)">10:10 Africa.mp3</button> 
+<br><audio id="mp3Player" controls> 	
+	<source src="01 Owner of a Lonely Heart.mp3" type="audio/mpeg">	
+Your browser does not supoort hte audio element	
+</audio>		
+<div id="timerShow" style="border:1px solid blue;"></div>	
+<button onclick="playId(1)">test</button>	
+<script>								
+	var xmlhttp = new XMLHttpRequest();				
+	xmlhttp.onreadystatechange = function() {				
+   	if(this.readyState == 4 && this.status == 200) {		
+       		var myObj = JSON.parse(this.responseText); 		
+       		document.getElementById("demo").innerHTML = myObj.songNum;	
+   	}								
+	};		
+	xmlhttp.open("GET", "https://littleflute.github.io/Elton-John/l.json", true);	
+	xmlhttp.send();							
+var oldBtn = null;		
+function play(o){		
+   if(oldBtn) oldBtn.style.backgroundColor = "green";	
+	var p = document.getElementById("mp3Player");	
+   var s = o.innerHTML; 				
+   s = s.split(":");				
+	p.src = s[1];	
+	p.play();	
+	var s = document.getElementById("curSong");	
+	if(s) s.innerHTML = p.src;				
+   o.style.backgroundColor="yellow";		
+   oldBtn = o;					
+}	
+var nTimer = 0;			
+setInterval(myTimeFun, 1000);	
+function myTimeFun(){		
+   nTimer++;			
+   var t = document.getElementById("timerShow"); 		
+   var p = document.getElementById("mp3Player"); 		
+t.innerHTML = nTimer + ": " + p.currentTime + "/" + p.duration;		
+if(p.ended) playId(parseInt(oldBtn.id)+1);	
+}
+function playId(id){	
+   var b = document.getElementById(id);	 
+   if(b==null) b = document.getElementById("1");	
+   play(b);	
+}
+//*		
+function mp3Engine(){	
+   this.p = document.getElementById("mp3Player");	
+   this.setVolume = function(v){	
+        this.p.volume = v;	
+   }
+}	
+var me = new mp3Engine();	
+me.setVolume(0.2);		
+//*/	
+</script>							
+</body>	
+</html>	
